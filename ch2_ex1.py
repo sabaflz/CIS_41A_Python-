@@ -3,10 +3,13 @@
 # Saba Feilizadeh
 # Compute gross pay using hours and rate per hour
 
+# Constant for the floating point precision
+PRECISION = 2
+
 hours = float(input("Enter Hours: "))
 rate = float(input("Enter Rate: "))
 pay = hours * rate
-print("Pay: ", pay)
+print("Pay: ", round(pay, PRECISION))
 
 
 '''
