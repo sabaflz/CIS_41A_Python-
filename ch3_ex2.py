@@ -37,7 +37,7 @@ def get_float_input(prompt):
             return None
         return value
     
-    # Handle nonnumeric inputs
+    # Handle non-numeric inputs
     except ValueError:
         print(f"Error, please enter a numeric input!")
         return None
