@@ -13,24 +13,27 @@ MENU = {
     5: {"name": "Con Cali Burger", "price": 5.95}
 }
 
-# Constant for tax (only for staff)
+# Constant for tax (staff only)
 TAX = 0.09
 # Constant for the floating point precision
 PRECISION = 2
 
 # Define column widths for the tables in the output
 ITEM_WIDTH = 20
-QTY_WIDTH = 12
-PRICE_WIDTH = 12
-TOTAL_WIDTH = 12
-LINE_WIDTH = ITEM_WIDTH + QTY_WIDTH + PRICE_WIDTH + TOTAL_WIDTH + 5
+GAP = 12
+LINE_WIDTH = ITEM_WIDTH + (GAP * 3) + 5
 
-# --------------------------------------------------------------------------
-def show_menu():
+# ------------------------------------------------------
+def display_menu():
     """
-    Displays the menu to the user.
-    Args: -
-    Returns: -
+    Displays the Food Court menu with item numbers, names, and prices.
+    
+    Args:
+        None   
+    Returns:
+        None     
+    Output:
+        Prints a formatted menu showing all available items and their prices
     """
     print("-" * LINE_WIDTH)
     print("<<" + "-" * ((LINE_WIDTH - 29) // 2) + " De Anza Food Court Menu " + "-" * ((LINE_WIDTH - 29) // 2)+ ">>\n")
@@ -41,36 +44,55 @@ def show_menu():
     print("6. Exit")
     print("-" * LINE_WIDTH)
 
-# --------------------------------------------------------------------------
+# ------------------------------------------------------
 def get_inputs():
     
     """
-    Gets the user's order and status.
-    Args: -
-    Returns: -
+    Gets the user's order and status (student/staff).
+    
+    Args:
+        None    
+    Returns:
+        tuple: Contains two elements:
+            - order (dict): Dictionary with item numbers as keys and quantities as values
+            - status (int): User's status code where:
+                * -1: No order placed
+                * 0: Student
+                * 1: Staff          
+    Output:
+        Prints prompts for user input and validation messages
     """
 
-    # Use dictionary for order quantities
+    # Initialize order dictionary with zero quantities
     order = {item_num: 0 for item_num in MENU.keys()}
-    status = -1
     wants_to_order = False
 
-    while True:
+    # Get and validate user's order
+    status = -1
+    keep_ordering = True
+    while keep_ordering:
         try:
             user_choice = int(input("What would you like to order?\n(Enter a number between 1 to 5 to select your order or enter 6 to exit):  "))
+            # Check if user wants to exit without ordering
             if user_choice == 6:
-                break
+                if not wants_to_order:
+                    print("\nThank you, hope to see you again!")
+                # Exit the menu
+                keep_ordering = False
             
             elif user_choice in MENU:
                 wants_to_order = True
-                while True:
+                # Get how many of the selected burger the user wants
+                valid_input = False
+                while not valid_input:
                     try:
                         item_quantity = int(input(f"How many of {MENU[user_choice]['name']} would you like to order? "))
                         if item_quantity <= 0:
                             print("Please enter a positive number!")
                         else:
                             order[user_choice] += item_quantity
-                            break
+                            valid_input = True
+
                     except ValueError:
                         print("Please enter a numeric value!")
             else:
@@ -79,9 +101,8 @@ def get_inputs():
             print("Error, please enter a numeric input!")
         
         print("-" * LINE_WIDTH)
-
-    print("-" * LINE_WIDTH)
     
+    # Assign the correct tax
     while wants_to_order and status not in (0, 1):
         try:
             status = int(input("Are you a staff or a student? (enter 1 for staff, 0 for student): "))
@@ -92,59 +113,75 @@ def get_inputs():
 
     return order, status
 
-# --------------------------------------------------------------------------
-
+# ------------------------------------------------------
 def compute_bill(order, status):
     """
-    Computes the total amount the user has to pay.
+    Computes the total bill amount before and after tax based on order and status.
+    
     Args:
+        order (dict): Dictionary containing item numbers as keys and quantities as values
+        status (int): User's status (0 for student, 1 for staff)
         
-    Returns: -
+    Returns:
+        tuple: Contains two elements:
+            - bill_before_tax (float): Total amount before tax
+            - bill_after_tax (float): Total amount after applying tax (if staff)
     """
 
     bill_before_tax = sum(MENU[item_num]["price"] * qty for item_num, qty in order.items())
     bill_after_tax = bill_before_tax * (1 + status * TAX)
     return bill_before_tax, bill_after_tax
 
-# --------------------------------------------------------------------------
-
-def print_bill(order, status, bill_before_tax, bill_after_tax):
+# ------------------------------------------------------
+def print_bill(order, bill_before_tax, bill_after_tax):
     """
-    Prints the total amount the reciept of the user's order.
+    Prints a formatted receipt showing the order details and total amounts.
+    
+    Args:
+        order (dict): Dictionary containing item numbers as keys and quantities as values
+        bill_before_tax (float): Total amount before tax
+        bill_after_tax (float): Total amount after tax
+        
+    Returns:
+        None
+        
+    Output:
+        Prints a formatted receipt showing:
+            - Items ordered with quantities and prices
+            - Subtotal (before tax)
+            - Tax amount (if applicable)
+            - Total amount
     """
 
     print("\n" + "*" * LINE_WIDTH)
     print("<<" + "-" * ((LINE_WIDTH - 15) // 2) + " Your Bill " + "-" * ((LINE_WIDTH - 15) // 2) + ">>\n")
     
-    print(f"{'Item':<{ITEM_WIDTH}} {'Quantity':<{QTY_WIDTH}} {'Price':<{PRICE_WIDTH}} {'Total':<{TOTAL_WIDTH}}")
+    print(f"{'Item':<{ITEM_WIDTH}} {'Quantity':<{GAP}} {'Price':<{GAP}} {'Total':<{GAP}}")
     print("-" * LINE_WIDTH)
 
     for item_num, qty in order.items():
         if qty > 0:
             item = MENU[item_num]
             total = item["price"] * qty
-            print(f"{item['name']:<{ITEM_WIDTH}} {qty:<{QTY_WIDTH}} ${item['price']:<{PRICE_WIDTH-1}} ${round(total, PRECISION):<{TOTAL_WIDTH-1}}")
+            print(f"{item['name']:<{ITEM_WIDTH}} {qty:<{GAP}} ${item['price']:<{GAP-1}} ${round(total, PRECISION):<{GAP-1}}")
     
     print("-" * LINE_WIDTH)
-    print(f"{'Bill before tax:':>{(LINE_WIDTH // 2)}}   ${round(bill_before_tax, PRECISION):<{PRICE_WIDTH}}")
-    print(f"{'Tax:':>{(LINE_WIDTH // 2)}}   ${round(bill_after_tax - bill_before_tax, PRECISION):<{PRICE_WIDTH}}")
-    print(f"{'Bill after tax:':>{(LINE_WIDTH // 2)}}   ${round(bill_after_tax, PRECISION):<{PRICE_WIDTH}}")
-    print(f"{'Total:':>{(LINE_WIDTH // 2)}}   ${round(bill_after_tax, PRECISION):<{PRICE_WIDTH}}")
+    print(f"{'Bill before tax:':>{(LINE_WIDTH // 2)}}   ${round(bill_before_tax, PRECISION):<{GAP}}")
+    print(f"{'Tax:':>{(LINE_WIDTH // 2)}}   ${round(bill_after_tax - bill_before_tax, PRECISION):<{GAP}}")
+    print(f"{'Bill after tax:':>{(LINE_WIDTH // 2)}}   ${round(bill_after_tax, PRECISION):<{GAP}}")
+    print(f"{'Total:':>{(LINE_WIDTH // 2)}}   ${round(bill_after_tax, PRECISION):<{GAP}}")
     print("*" * LINE_WIDTH)
 
-# --------------------------------------------------------------------------
-
+# ------------------------------------------------------
 def main():
     
-    show_menu()
-
+    display_menu()
     quantities, status = get_inputs()
 
-    bill_before_tax, bill_after_tax = compute_bill(quantities, status)
-
-    # Don't show the bill if they didn't order anything
-    if sum(quantities) != 0:
-        print_bill(quantities, status, bill_before_tax, bill_after_tax)
+    # Only proceed if the user placed an order
+    if sum(quantities.values()) > 0:
+        bill_before_tax, bill_after_tax = compute_bill(quantities, status)
+        print_bill(quantities, bill_before_tax, bill_after_tax)
     
 # ------------------------------------------------------
 if __name__ == "__main__":
@@ -171,6 +208,8 @@ Output 1:
 -------------------------------------------------------------
 What would you like to order?
 (Enter a number between 1 to 5 to select your order or enter 6 to exit):  6
+
+Thank you, hope to see you again!
 -------------------------------------------------------------
 Done!
 
@@ -189,7 +228,7 @@ Output 2:
 6. Exit
 -------------------------------------------------------------
 What would you like to order?
-(Enter a number between 1 to 5 to select your order or enter 6 to exit):  3
+(Enter a number between 1 to 5 to select your order or enter 6 to exit):      3
 How many of Mushroom Swiss would you like to order? 5
 -------------------------------------------------------------
 What would you like to order?
@@ -236,11 +275,11 @@ Output 3:
 6. Exit
 -------------------------------------------------------------
 What would you like to order?
-(Enter a number between 1 to 5 to select your order or enter 6 to exit):  de anza
+(Enter a number between 1 to 5 to select your order or enter 6 to exit):  de anza burger
 Error, please enter a numeric input!
 -------------------------------------------------------------
 What would you like to order?
-(Enter a number between 1 to 5 to select your order or enter 6 to exit):  -9
+(Enter a number between 1 to 5 to select your order or enter 6 to exit):  -7
 Please enter a valid option from the menu!
 -------------------------------------------------------------
 What would you like to order?
