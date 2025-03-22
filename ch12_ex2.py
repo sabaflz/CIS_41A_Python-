@@ -28,6 +28,7 @@ class FibonacciIterator:
         if self.count >= self.limit:
             raise StopIteration
         
+        # Handle first two numbers of sequence (both are 1)
         if self.count == 0:
             self.count += 1
             return 1
@@ -35,9 +36,10 @@ class FibonacciIterator:
             self.count += 1
             return 1
         
+        # Calculate next Fibonacci number by adding previous two numbers
         result = self.a + self.b
-        self.a = self.b
-        self.b = result
+        self.a = self.b  # Shift numbers: old b becomes new a
+        self.b = result  # New sum becomes new b
         self.count += 1
         return result
 # ------------------------------------------------------ 
@@ -55,13 +57,15 @@ def fibonacci_generator(limit):
     a, b = 0, 1
     count = 0
     while count < limit:
+        # Handle first two numbers of sequence (both are 1)
         if count == 0 or count == 1:
             yield 1
         else:
+            # Calculate next Fibonacci number by adding previous two numbers
             c = a + b
             yield c
-            a = b
-            b = c
+            a = b      # Shift numbers: old b becomes new a
+            b = c      # New sum becomes new b
         count += 1
 # ------------------------------------------------------ 
 def get_valid_input():
