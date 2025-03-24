@@ -397,4 +397,157 @@ Total:                           $      10.50
 
 Bill saved to 2025-03-24 13-49-41.txt
 
+========================================================
+Output 4:
+========================================================
+------------------------------------------------------------
+<<---------------- De Anza Food Court Menu ---------------->>
+
+1. De Anza Burger ................................... $ 5.25
+2. Bacon Cheese ..................................... $ 5.75
+3. Mushroom Swiss ................................... $ 5.95
+4. Western Burger ................................... $ 5.95
+5. Con Cali Burger .................................. $ 5.95
+6. Exit
+------------------------------------------------------------
+
+1. Add item
+2. Update item quantity
+3. Remove item
+4. View current order
+5. Finish order
+6. Cancel order
+Enter your choice (1-6): 1
+------------------------------------------------------------
+<<---------------- De Anza Food Court Menu ---------------->>
+
+1. De Anza Burger ................................... $ 5.25
+2. Bacon Cheese ..................................... $ 5.75
+3. Mushroom Swiss ................................... $ 5.95
+4. Western Burger ................................... $ 5.95
+5. Con Cali Burger .................................. $ 5.95
+6. Exit
+------------------------------------------------------------
+What would you like to order?
+(Enter 1-5 to select, 6 to exit): 3
+How many Mushroom Swisss would you like? 1000
+------------------------------------------------------------
+
+1. Add item
+2. Update item quantity
+3. Remove item
+4. View current order
+5. Finish order
+6. Cancel order
+Enter your choice (1-6): 2
+
+Current items:
+1. Mushroom Swiss: 1000
+Select item number to update (or 0 to cancel): 10
+Please enter a number between 0 and 1!
+Select item number to update (or 0 to cancel): 1
+Current quantity for Mushroom Swiss: 1000
+Enter new quantity (0 to remove): 10
+
+Mushroom Swiss quantity updated to 10
+------------------------------------------------------------
+
+1. Add item
+2. Update item quantity
+3. Remove item
+4. View current order
+5. Finish order
+6. Cancel order
+Enter your choice (1-6): 1
+------------------------------------------------------------
+<<---------------- De Anza Food Court Menu ---------------->>
+
+1. De Anza Burger ................................... $ 5.25
+2. Bacon Cheese ..................................... $ 5.75
+3. Mushroom Swiss ................................... $ 5.95
+4. Western Burger ................................... $ 5.95
+5. Con Cali Burger .................................. $ 5.95
+6. Exit
+------------------------------------------------------------
+What would you like to order?
+(Enter 1-5 to select, 6 to exit): 5
+How many Con Cali Burgers would you like? 3
+------------------------------------------------------------
+
+1. Add item
+2. Update item quantity
+3. Remove item
+4. View current order
+5. Finish order
+6. Cancel order
+Enter your choice (1-6): 1
+------------------------------------------------------------
+<<---------------- De Anza Food Court Menu ---------------->>
+
+1. De Anza Burger ................................... $ 5.25
+2. Bacon Cheese ..................................... $ 5.75
+3. Mushroom Swiss ................................... $ 5.95
+4. Western Burger ................................... $ 5.95
+5. Con Cali Burger .................................. $ 5.95
+6. Exit
+------------------------------------------------------------
+What would you like to order?
+(Enter 1-5 to select, 6 to exit): 4
+How many Western Burgers would you like? 7
+------------------------------------------------------------
+
+1. Add item
+2. Update item quantity
+3. Remove item
+4. View current order
+5. Finish order
+6. Cancel order
+Enter your choice (1-6): 3
+
+Select item to remove:
+1. Mushroom Swiss: 10
+2. Con Cali Burger: 3
+3. Western Burger: 7
+Select item number to remove (or 0 to cancel): 2
+
+Con Cali Burger removed from order
+------------------------------------------------------------
+
+1. Add item
+2. Update item quantity
+3. Remove item
+4. View current order
+5. Finish order
+6. Cancel order
+Enter your choice (1-6): 4
+
+Current order:
+Mushroom Swiss: 10 - $59.50
+Western Burger: 7 - $41.65
+------------------------------------------------------------
+
+1. Add item
+2. Update item quantity
+3. Remove item
+4. View current order
+5. Finish order
+6. Cancel order
+Enter your choice (1-6): 5
+------------------------------------------------------------
+Are you a staff or student? (1 for staff, 0 for student): 1
+************************************************************
+<<------------------- Your Bill ------------------->>
+
+Item                 Quantity     Price        Total       
+------------------------------------------------------------
+Mushroom Swiss       10           $5.95        $59.50      
+Western Burger       7            $5.95        $41.65      
+------------------------------------------------------------
+Bill before tax:                 $     101.15
+Tax:                             $       9.10
+Total:                           $     110.25
+************************************************************
+
+Bill saved to 2025-03-24 14-09-18.txt
+
 '''
