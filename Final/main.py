@@ -76,14 +76,41 @@ def get_order():
         elif choice == 2:  # UPDATE
             if temp_order:
                 print("\nCurrent items:")
-                for burger, qty in temp_order.items():
-                    print(f"{burger.name}: {qty}")
-                # ... logic to select and update item quantity
+                # Create a numbered list of items
+                items = list(temp_order.items())
+                for idx, (burger, qty) in enumerate(items, 1):
+                    print(f"{idx}. {burger.name}: {qty}")
+                
+                # Get item selection
+                item_idx = get_integer_input("Select item number to update (or 0 to cancel): ", 0, len(items))
+                if item_idx > 0:
+                    burger, current_qty = items[item_idx - 1]
+                    print(f"Current quantity for {burger.name}: {current_qty}")
+                    new_qty = get_integer_input("Enter new quantity (0 to remove): ", 0, None)
+                    
+                    if new_qty == 0:
+                        del temp_order[burger]
+                        print(f"\n{burger.name} removed from order")
+                    else:
+                        temp_order[burger] = new_qty
+                        print(f"\n{burger.name} quantity updated to {new_qty}")
+            else:
+                print("\nOrder is empty! Nothing to update.")
                 
         elif choice == 3:  # DELETE
             if temp_order:
                 print("\nSelect item to remove:")
-                # ... logic to select and remove item
+                items = list(temp_order.items())
+                for idx, (burger, qty) in enumerate(items, 1):
+                    print(f"{idx}. {burger.name}: {qty}")
+                
+                item_idx = get_integer_input("Select item number to remove (or 0 to cancel): ", 0, len(items))
+                if item_idx > 0:
+                    burger, _ = items[item_idx - 1]
+                    del temp_order[burger]
+                    print(f"\n{burger.name} removed from order")
+            else:
+                print("\nOrder is empty! Nothing to remove.")
                 
         elif choice == 4:  # READ
             if temp_order:
@@ -162,10 +189,16 @@ Output 1:
 5. Con Cali Burger .................................. $ 5.95
 6. Exit
 ------------------------------------------------------------
-What would you like to order?
-(Enter 1-5 to select, 6 to exit): 6
 
-Thank you, hope to see you again!
+1. Add item
+2. Update item quantity
+3. Remove item
+4. View current order
+5. Finish order
+6. Cancel order
+Enter your choice (1-6): 6
+
+Order cancelled
 
 ========================================================
 Output 2:
@@ -180,20 +213,95 @@ Output 2:
 5. Con Cali Burger .................................. $ 5.95
 6. Exit
 ------------------------------------------------------------
+
+1. Add item
+2. Update item quantity
+3. Remove item
+4. View current order
+5. Finish order
+6. Cancel order
+Enter your choice (1-6): 1
+------------------------------------------------------------
+<<---------------- De Anza Food Court Menu ---------------->>
+
+1. De Anza Burger ................................... $ 5.25
+2. Bacon Cheese ..................................... $ 5.75
+3. Mushroom Swiss ................................... $ 5.95
+4. Western Burger ................................... $ 5.95
+5. Con Cali Burger .................................. $ 5.95
+6. Exit
+------------------------------------------------------------
 What would you like to order?
 (Enter 1-5 to select, 6 to exit): 3
 How many Mushroom Swisss would you like? 5
+------------------------------------------------------------
+
+1. Add item
+2. Update item quantity
+3. Remove item
+4. View current order
+5. Finish order
+6. Cancel order
+Enter your choice (1-6): 1
+------------------------------------------------------------
+<<---------------- De Anza Food Court Menu ---------------->>
+
+1. De Anza Burger ................................... $ 5.25
+2. Bacon Cheese ..................................... $ 5.75
+3. Mushroom Swiss ................................... $ 5.95
+4. Western Burger ................................... $ 5.95
+5. Con Cali Burger .................................. $ 5.95
+6. Exit
 ------------------------------------------------------------
 What would you like to order?
 (Enter 1-5 to select, 6 to exit): 1
 How many De Anza Burgers would you like? 2
 ------------------------------------------------------------
+
+1. Add item
+2. Update item quantity
+3. Remove item
+4. View current order
+5. Finish order
+6. Cancel order
+Enter your choice (1-6): 1
+------------------------------------------------------------
+<<---------------- De Anza Food Court Menu ---------------->>
+
+1. De Anza Burger ................................... $ 5.25
+2. Bacon Cheese ..................................... $ 5.75
+3. Mushroom Swiss ................................... $ 5.95
+4. Western Burger ................................... $ 5.95
+5. Con Cali Burger .................................. $ 5.95
+6. Exit
+------------------------------------------------------------
 What would you like to order?
 (Enter 1-5 to select, 6 to exit): 5
 How many Con Cali Burgers would you like? 4
 ------------------------------------------------------------
-What would you like to order?
-(Enter 1-5 to select, 6 to exit): 6
+
+1. Add item
+2. Update item quantity
+3. Remove item
+4. View current order
+5. Finish order
+6. Cancel order
+Enter your choice (1-6): 4
+
+Current order:
+Mushroom Swiss: 5 - $29.75
+De Anza Burger: 2 - $10.50
+Con Cali Burger: 4 - $23.80
+------------------------------------------------------------
+
+1. Add item
+2. Update item quantity
+3. Remove item
+4. View current order
+5. Finish order
+6. Cancel order
+Enter your choice (1-6): 5
+------------------------------------------------------------
 Are you a staff or student? (1 for staff, 0 for student): 1
 ************************************************************
 <<------------------- Your Bill ------------------->>
@@ -209,11 +317,29 @@ Tax:                             $       5.76
 Total:                           $      69.81
 ************************************************************
 
-Bill saved to 2025-03-24 13-29-48.txt
+Bill saved to 2025-03-24 13-46-41.txt
 
 ========================================================
 Output 3:
 ========================================================
+------------------------------------------------------------
+<<---------------- De Anza Food Court Menu ---------------->>
+
+1. De Anza Burger ................................... $ 5.25
+2. Bacon Cheese ..................................... $ 5.75
+3. Mushroom Swiss ................................... $ 5.95
+4. Western Burger ................................... $ 5.95
+5. Con Cali Burger .................................. $ 5.95
+6. Exit
+------------------------------------------------------------
+
+1. Add item
+2. Update item quantity
+3. Remove item
+4. View current order
+5. Finish order
+6. Cancel order
+Enter your choice (1-6): 1
 ------------------------------------------------------------
 <<---------------- De Anza Food Court Menu ---------------->>
 
@@ -241,8 +367,15 @@ How many De Anza Burgers would you like? -1
 Please enter a positive number!
 How many De Anza Burgers would you like? 2
 ------------------------------------------------------------
-What would you like to order?
-(Enter 1-5 to select, 6 to exit): 6
+
+1. Add item
+2. Update item quantity
+3. Remove item
+4. View current order
+5. Finish order
+6. Cancel order
+Enter your choice (1-6): 5
+------------------------------------------------------------
 Are you a staff or student? (1 for staff, 0 for student): staff
 Please enter a valid number!
 Are you a staff or student? (1 for staff, 0 for student): -3
@@ -262,6 +395,6 @@ Tax:                             $       0.00
 Total:                           $      10.50
 ************************************************************
 
-Bill saved to 2025-03-24 13-30-46.txt
+Bill saved to 2025-03-24 13-49-41.txt
 
 '''
