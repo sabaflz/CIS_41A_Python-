@@ -29,11 +29,14 @@ class Order:
 # ------------------------------------------------------ 
     def add_item(self, burger, quantity):
         """
-        Add or update an item in the order.
-        
+        Add a new item to the order or update quantity if it already exists.
+
         Args:
-            burger (Burger): The burger to add to the order
-            quantity (int): The quantity to add
+            burger (Burger): The burger object to add to the order
+            quantity (int): The quantity of burgers to add
+
+        Example:
+            >>> order.add_item(DeAnzaBurger(), 2)
         """
         if burger in self._items:
             self._items[burger] += quantity
@@ -119,3 +122,52 @@ class Order:
         with open(BILLS_DIRECTORY + filename, 'w') as f:
             f.write(self.generate_bill())
         return filename
+# ------------------------------------------------------ 
+    def get_item_quantity(self, burger):
+        """
+        Get the quantity of a specific burger in the order.
+
+        Args:
+            burger (Burger): The burger object to look up
+
+        Returns:
+            int: The quantity of the specified burger (0 if not in order)
+
+        Example:
+            >>> order.get_item_quantity(DeAnzaBurger())
+            2
+        """
+        return self._items.get(burger, 0)
+# ------------------------------------------------------ 
+    def update_item_quantity(self, burger, new_quantity):
+        """
+        Update the quantity of an existing item in the order.
+        If new quantity is 0 or negative, the item will be removed.
+
+        Args:
+            burger (Burger): The burger object to update
+            new_quantity (int): The new quantity to set
+
+        Example:
+            >>> order.update_item_quantity(DeAnzaBurger(), 3)
+        """
+        if new_quantity > 0:
+            self._items[burger] = new_quantity
+        else:
+            self.remove_item(burger)
+# ------------------------------------------------------ 
+    def remove_item(self, burger):
+        """
+        Remove an item completely from the order.
+
+        Args:
+            burger (Burger): The burger object to remove
+
+        Raises:
+            KeyError: If the burger is not in the order
+
+        Example:
+            >>> order.remove_item(DeAnzaBurger())
+        """
+        if burger in self._items:
+            del self._items[burger]

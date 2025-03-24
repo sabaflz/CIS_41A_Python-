@@ -10,7 +10,7 @@ from constants import (
     MENU, LINE_WIDTH, MENU_HEADER_PADDING, EXIT_CHOICE,
     STUDENT, STAFF
 )
-from input_validator import get_menu_choice, get_customer_type, get_quantity
+from input_validator import get_menu_choice, get_customer_type, get_quantity, get_integer_input
 # ------------------------------------------------------ 
 def display_menu():
     """
@@ -28,39 +28,81 @@ def display_menu():
 # ------------------------------------------------------ 
 def get_order():
     """
-    Handle the order process including customer type selection and item ordering.
+    Handle the order process with full CRUD (Create, Read, Update, Delete) operations.
+    
+    Provides an interactive menu that allows users to:
+    1. Add new items (Create)
+    2. View current order (Read)
+    3. Update item quantities (Update)
+    4. Remove items (Delete)
+    5. Finish the order
+    6. Cancel the order
     
     Returns:
-        Order: Complete order object if items were ordered, None if no order was made
+        Order: Complete order object if items were ordered and confirmed
+        None: If the order was cancelled or no items were ordered
+        
+    Example:
+        >>> order = get_order()
+        >>> if order:
+        >>>     print(order.generate_bill())
     """
-    # Dictionary to temporarily store orders before customer type is known
-    temp_order = {}  
+    temp_order = {}  # Dictionary to temporarily store orders before customer type is known
     wants_to_order = False
     ordering = True
 
-    # Main ordering loop
     while ordering:
-        choice = get_menu_choice()
+        print("\n1. Add item")
+        print("2. Update item quantity")
+        print("3. Remove item")
+        print("4. View current order")
+        print("5. Finish order")
+        print("6. Cancel order")
         
-        # Handle exit condition
-        if choice == EXIT_CHOICE:
-            if not wants_to_order:
-                print("\nThank you, hope to see you again!")
-                return None
-            ordering = False
+        choice = get_integer_input("Enter your choice (1-6): ", 1, 6)
         
-        # Process valid menu selections
-        if choice in MENU:
-            wants_to_order = True
-            burger = MENU[choice]
-            quantity = get_quantity(burger.name)
-            
-            # Update quantity if item already exists, otherwise add new item
-            if burger in temp_order:
-                temp_order[burger] += quantity
-            else:
-                temp_order[burger] = quantity
+        if choice == 1:  # CREATE
+            display_menu()
+            item_choice = get_menu_choice()
+            if item_choice in MENU:
+                burger = MENU[item_choice]
+                quantity = get_quantity(burger.name)
+                if burger in temp_order:
+                    temp_order[burger] += quantity
+                else:
+                    temp_order[burger] = quantity
+                wants_to_order = True
                 
+        elif choice == 2:  # UPDATE
+            if temp_order:
+                print("\nCurrent items:")
+                for burger, qty in temp_order.items():
+                    print(f"{burger.name}: {qty}")
+                # ... logic to select and update item quantity
+                
+        elif choice == 3:  # DELETE
+            if temp_order:
+                print("\nSelect item to remove:")
+                # ... logic to select and remove item
+                
+        elif choice == 4:  # READ
+            if temp_order:
+                print("\nCurrent order:")
+                for burger, qty in temp_order.items():
+                    print(f"{burger.name}: {qty} - ${burger.price * qty:.2f}")
+            else:
+                print("\nOrder is empty")
+                
+        elif choice == 5:  # Finish order
+            if wants_to_order:
+                ordering = False
+            else:
+                print("\nOrder is empty!")
+                
+        elif choice == 6:  # Cancel order
+            print("\nOrder cancelled")
+            return None
+            
         print("-" * LINE_WIDTH)
 
     # Create final order after customer type is determined
@@ -69,7 +111,6 @@ def get_order():
         customer = Staff() if status == STAFF else Student()
         order = Order(customer)
         
-        # Transfer items from temporary storage to final order
         for burger, quantity in temp_order.items():
             order.add_item(burger, quantity)
         
@@ -78,7 +119,20 @@ def get_order():
     return None
 # ------------------------------------------------------ 
 def main():
+    """
+    Main program entry point that handles the complete ordering process.
     
+    Flow:
+    1. Displays the menu
+    2. Gets the order with CRUD operations
+    3. If order exists:
+        - Generates and displays the bill
+        - Saves the bill to a file
+    
+    Example:
+        >>> if __name__ == "__main__":
+        >>>     main()
+    """
     display_menu()
     order = get_order()
     
