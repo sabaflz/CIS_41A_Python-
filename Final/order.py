@@ -114,7 +114,7 @@ class Order:
             str: The filename where the bill was saved
         """
         if filename is None:
-            filename = f"bill_{self._order_time.strftime('%Y%m%d_%H%M%S')}.txt"
+            filename = f"{self._order_time.strftime('%Y-%m-%d %H-%M-%S')}.txt"
         
         with open(BILLS_DIRECTORY + filename, 'w') as f:
             f.write(self.generate_bill())

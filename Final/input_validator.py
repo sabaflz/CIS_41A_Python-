@@ -18,8 +18,8 @@ def get_integer_input(prompt, min_value=None, max_value=None, error_message=None
     valid_input = False
     while not valid_input:
         try:
-            # Attempt to convert input to integer
-            value = int(input(prompt))
+            # Strip whitespace from input before converting to integer
+            value = int(input(prompt).strip())
             
             # Check if value is within acceptable range
             if (min_value is not None and value < min_value) or \
